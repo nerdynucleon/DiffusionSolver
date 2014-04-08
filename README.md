@@ -12,21 +12,21 @@ Goal: Develop a 2D transport solver in Fortran. The solver should be capable of 
 Major Steps to Execute 
 * Data acquisition:						
 	- Accept inputs from user:
-	- Solution method
-	- Max number of iterations or max time
-	- Grid spacing
-	- Constants / functions
-	- Output format
-* Error check user input
+		* Solution method
+		* Max number of iterations or max time
+		* Grid spacing
+		* Constants / functions
+		* Output format
+	- Error check user input
 * Matrix Generation:
 	- Building the matrix
 * Matrix Solving:
 	- Iterative Methods
-	* SOR
-	* jacobi
-	* Gauss-Seidel
-* Matrix Inversion
-	- x = A-1b
+		* SOR
+		* jacobi
+		* Gauss-Seidel
+	- Matrix Inversion
+		* x = A-1b
 * Displaying Output:
 	- Vector solution
 	- Graphical solution
