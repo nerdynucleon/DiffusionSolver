@@ -45,3 +45,16 @@ Deadlines
 
 Division of Labor: 
 Alex will take on the majority of sub-points 1 and 3 of the execution steps, while Uday will aid as necessary. Uday will also take on sub-points 2 and 4 of the execution steps and write the majority of the written reports, while Alex will aid as necessary.
+
+Compiling
+=========
+Ubuntu 13.0 terminal:
+```
+$ f90 transportsolver.f90 input.f90 version_data.f90 -o main.out
+```
+Executing
+==========
+Ubuntu 13.0 terminal:
+```
+$ ./main.out
+```
