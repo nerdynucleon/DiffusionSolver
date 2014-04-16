@@ -50,7 +50,7 @@ Compiling
 =========
 Ubuntu 13.0 terminal:
 ```
-$ gfortran transportsolver.f90 input.f90 version_data.f90 -o main.out
+$ f90 transportsolver.f90 input.f90 version_data.f90 -o main.out
 ```
 Executing
 ==========

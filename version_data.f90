@@ -1,13 +1,10 @@
 MODULE version_data
-	IMPLICIT NONE
-	CHARACTER :: Version= "0.1", Title="Transport Solver", Authors="Uday Mehta | Alexandre Chong"
-	CHARACTER :: date, time, zone
-	INTEGER :: values
-
-CONTAINS
-	INTEGER FUNCTION ver_status(Version, Title, Authors)
-		WRITE(*,*) Version, Title, Authors
-		DATE_AND_TIME(date,time,zone,values)
-		WRITE(*,*) date, times, zone, values
-
+	CHARACTER(8) :: start_date
+	CHARACTER(10) :: start_time
+	CHARACTER(8) :: end_date
+	CHARACTER(10) :: end_time
+	CHARACTER(10) :: zone
+	CHARACTER(12) ::Version= "Version 0.1 "
+	CHARACTER(17):: Title="Transport Solver "
+	CHARACTER(28) ::Authors="Uday Mehta | Alexandre Chong"
 END MODULE version_data
