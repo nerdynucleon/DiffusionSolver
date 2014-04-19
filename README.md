@@ -50,11 +50,14 @@ Compiling
 =========
 Ubuntu 13.0 terminal:
 ```
-$ gfortran transportsolver.f90 input.f90 version_data.f90 -o main.out
+$ gfortran transportsolver.f90 version_data.f90 -o main.out
 ```
 Executing
 ==========
 Ubuntu 13.0 terminal:
 ```
-$ ./main.out
+$ ./a.out
 ```
+Note:
+TransportInput must exist
+TransportOutput cannot exist in same directory
