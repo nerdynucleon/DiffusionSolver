@@ -8,18 +8,18 @@ PROGRAM Transport_Solver
 	
 
 
-	WRITE(*,*) Version,Title,Authors
+	WRITE(2,*) Version,Title,Authors
 	CALL date_and_time(start_date,start_time,zone)
-	WRITE(*,*) 'Date: ', start_date
-	WRITE(*,*) 'Time: ', start_time
-	WRITE(*,*) 'Timezone: ', zone
+	WRITE(2,*) 'Date: ', start_date
+	WRITE(2,*) 'Time: ', start_time
+	WRITE(2,*) 'Timezone: ', zone
 
 
 
 
 	CALL date_and_time(end_date,end_time,zone)
-	WRITE(*,*) 'Date: ', end_date
-	WRITE(*,*) 'Time: ', end_time
+	WRITE(2,*) 'Date: ', end_date
+	WRITE(2,*) 'Time: ', end_time
 
 
 END PROGRAM Transport_Solver
