@@ -1,13 +1,13 @@
-TransportSolver
+DiffusionSolver
 ===============
 
-2D Fortran Transport Solver NE 155 Sp2014 UC Berkeley
+2D Fortran Diffusion Solver NE 155 Sp2014 UC Berkeley
 
 Project Proposal:	NE 155  | Spring 2014
 =======================================
 Team Members: 		Uday Mehta | Alexandre Chong
 
-Goal: Develop a 2D transport solver in Fortran. The solver should be capable of solving non-homogeneous materials given a continuous function or an array of discrete values the grid will have uniform spacing. The boundary conditions will be top and right reflecting and vacuum at the bottom and left.
+Goal: Develop a 2D diffusion solver in Fortran. The solver should be capable of solving non-homogeneous materials given a continuous function or an array of discrete values the grid will have uniform spacing. The boundary conditions will be top and right reflecting and vacuum at the bottom and left.
 
 Major Steps to Execute 
 * Data acquisition:						
@@ -50,7 +50,7 @@ Compiling
 =========
 Ubuntu 13.0 terminal:
 ```
-$ gfortran transportsolver.f90 version_data.f90 -o main.out
+$ gfortran diffusionsolver.f90 version_data.f90 -o main.out
 ```
 Executing
 ==========
@@ -59,5 +59,5 @@ Ubuntu 13.0 terminal:
 $ ./a.out
 ```
 Note:
-TransportInput must exist
-TransportOutput cannot exist in same directory
+DiffusionInput must exist
+DiffusionOutput cannot exist in same directory
