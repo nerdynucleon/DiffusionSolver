@@ -1,6 +1,10 @@
 PROGRAM ITERATE_TEST
 	USE iterate
 	IMPLICIT NONE
+	open(unit=1, file="DiffusionInput", iostat=ios, status="old", action="read")
+	if ( ios /= 0 ) stop "Error opening file name"
+	open(unit=2, file="DiffusionOutput", iostat=ios, status="new", action="write")
+	if ( ios /= 0 ) stop "Error opening file name"
 	REAL, DIMENSION(2,2) :: A
 	REAL, DIMENSION(2) :: b, x, x_0
 	INTEGER :: n, iter
