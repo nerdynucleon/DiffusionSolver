@@ -16,6 +16,7 @@ CONTAINS
 			DO j=1, n-1
 				G(i,j,4)= 0
 				CALL circle(i,j,grid_h,n_circles,circles,D,sig_a,source_mat,G)
+				CALL rectangle(i,j,grid_h,n_squares,squares,D,sig_a,source_mat,G)
 				IF (G(i,j,4) == 0) THEN
 					G(i,j,1)= D(1)
 					G(i,j,2)= sig_a(1)
