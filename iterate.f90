@@ -35,7 +35,7 @@ CONTAINS
 		REAL, DIMENSION(:,:), INTENT(IN) :: circles
 		REAL :: grid_h
 		DO k = 1, n_circles
-			IF ( (circles(5,k) > G(i,j,4)) .AND. (radius(circles(2,k),(i*grid_h),circles(3,k),(j*grid_h),circles(4,k)))) THEN
+			IF ( (circles(5,k) > G(i,j,4)) .AND. (radius(i,circles(2,k),j,circles(3,k),circles(4,k),grid_h))) THEN
 				mat = circles(1,k)
 				G(i,j,1)= D(mat)
 				G(i,j,2)= sig_a(mat)
@@ -45,10 +45,13 @@ CONTAINS
 		END DO
 	END SUBROUTINE circle
 
-	LOGICAL FUNCTION radius(x1,x2,y1,y2,r)
+	LOGICAL FUNCTION radius(i,x,j,y,r,grid_h)
 		IMPLICIT NONE
-		REAL :: x1,x2,y1,y2,r
-		IF (((x1 - x2)**2 + (y1 - y2)**2) <= (r**2) ) THEN
+		INTEGER :: i,j
+		REAL :: x,x1,y,y1,r,grid_h
+		x1 = grid_h * (i-0.5)
+		y1 = grid_h * (j-0.5)
+		IF (((x1 - x)**2 + (y1 - y)**2) <= (r**2) ) THEN
 			radius = .TRUE.
 		ELSE
 			radius = .FALSE.
@@ -65,7 +68,7 @@ CONTAINS
 		REAL, DIMENSION(:,:), INTENT(IN) :: squares
 		REAL :: grid_h
 		DO k = 1, n_squares
-			IF ((squares(6,k) > G(i,j,4)) .AND. (inside((i*grid_h),(j*grid_h),squares(2,k),squares(3,k),squares(4,k),squares(5,k)))) THEN
+			IF ((squares(6,k) > G(i,j,4)) .AND. (inside(i,j,squares(2,k),squares(3,k),squares(4,k),squares(5,k),grid_h))) THEN
 				mat = squares(1,k)
 				G(i,j,1)= D(mat)
 				G(i,j,2)= sig_a(mat)
@@ -77,7 +80,12 @@ CONTAINS
 
 
 
-	LOGICAL FUNCTION inside(x,y,x1,x2,y1,y2)
+	LOGICAL FUNCTION inside(i,j,x1,x2,y1,y2,grid_h)
+		IMPLICIT NONE
+		INTEGER :: i,j
+		REAL :: x,x1,x2,y,y1,y2,grid_h
+		x = grid_h * (i - 0.5)
+		y = grid_h * (j - 0.5)
 		IF ( (x >= x1) .AND. (x <= x2) .AND. (y >= y1) .AND. (y <= y2) ) THEN
 			inside = .TRUE.
 		ELSE
