@@ -1,44 +1,89 @@
 MODULE iterate
 
 CONTAINS
-	SUBROUTINE geometry(G,n,D,sig_a,source_mat)
+	SUBROUTINE geometry(G,n,D,sig_a,source_mat,n_circles, n_squares, squares, circles,grid_h)
 		IMPLICIT NONE
-		INTEGER, INTENT(IN) :: n
+		INTEGER, INTENT(IN) :: n, n_circles, n_squares
 		REAL, DIMENSION(:,:,:), INTENT(OUT) :: G
 		REAL, DIMENSION(:), INTENT(IN) :: D, sig_a, source_mat
+		REAL, DIMENSION(:,:), INTENT(IN) :: squares, circles
+		REAL, INTENT(IN) :: grid_h
 		INTEGER :: i, j
 		PRINT *, "Building Geometry..."
 
 
 		DO i=1, n-1
 			DO j=1, n-1
-
-				G(i,j,1)= D(1)
-				G(i,j,2)= sig_a(1)
-				G(i,j,3)= source_mat(1)
 				G(i,j,4)= 0
-
-
-
+				CALL circle(i,j,grid_h,n_circles,circles,D,sig_a,source_mat,G)
+				IF (G(i,j,4) == 0) THEN
+					G(i,j,1)= D(1)
+					G(i,j,2)= sig_a(1)
+					G(i,j,3)= source_mat(1)
+				END IF
 			END DO
 		END DO
 	END SUBROUTINE geometry
 
 
 	SUBROUTINE circle(i,j,grid_h,n_circles,circles,D,sig_a,source_mat,G)
-		!IMPLICIT NONE
-		!DO k=1, n_circles
-		!	IF ( ((i*grid_h - circles(2,k))^2 + ((j*grid_h)-circles(3,k))^2) <= circles(4,k)^2) THEN
-		!		G(i,j)= 
-		!END DO
-
+		IMPLICIT NONE
+		INTEGER, INTENT(IN) :: i,j,n_circles
+		INTEGER :: k, mat
+		REAL, DIMENSION(:,:,:), INTENT(INOUT) :: G
+		REAL, DIMENSION(:), INTENT(IN) :: D, sig_a, source_mat
+		REAL, DIMENSION(:,:), INTENT(IN) :: circles
+		REAL :: grid_h
+		DO k = 1, n_circles
+			IF ( (circles(5,k) > G(i,j,4)) .AND. (radius(circles(2,k),(i*grid_h),circles(3,k),(j*grid_h),circles(4,k)))) THEN
+				mat = circles(1,k)
+				G(i,j,1)= D(mat)
+				G(i,j,2)= sig_a(mat)
+				G(i,j,3)= source_mat(mat)
+				G(i,j,4)= circles(5,k)
+			END IF
+		END DO
 	END SUBROUTINE circle
 
-
-	SUBROUTINE rectangle()
+	LOGICAL FUNCTION radius(x1,x2,y1,y2,r)
 		IMPLICIT NONE
+		REAL :: x1,x2,y1,y2,r
+		IF (((x1 - x2)**2 + (y1 - y2)**2) <= (r**2) ) THEN
+			radius = .TRUE.
+		ELSE
+			radius = .FALSE.
+		END IF
+	END FUNCTION radius
 
+
+	SUBROUTINE rectangle(i,j,grid_h,n_squares,squares,D,sig_a,source_mat,G)
+		IMPLICIT NONE
+		INTEGER, INTENT(IN) :: i,j,n_squares
+		INTEGER :: k, mat
+		REAL, DIMENSION(:,:,:), INTENT(INOUT) :: G
+		REAL, DIMENSION(:), INTENT(IN) :: D, sig_a, source_mat
+		REAL, DIMENSION(:,:), INTENT(IN) :: squares
+		REAL :: grid_h
+		DO k = 1, n_squares
+			IF ((squares(6,k) > G(i,j,4)) .AND. (inside((i*grid_h),(j*grid_h),squares(2,k),squares(3,k),squares(4,k),squares(5,k)))) THEN
+				mat = squares(1,k)
+				G(i,j,1)= D(mat)
+				G(i,j,2)= sig_a(mat)
+				G(i,j,3)= source_mat(mat)
+				G(i,j,4)= squares(6,k)
+			END IF
+		END DO
 	END SUBROUTINE rectangle
+
+
+
+	LOGICAL FUNCTION inside(x,y,x1,x2,y1,y2)
+		IF ( (x >= x1) .AND. (x <= x2) .AND. (y >= y1) .AND. (y <= y2) ) THEN
+			inside = .TRUE.
+		ELSE
+			inside = .FALSE.
+		END IF
+	END FUNCTION inside
 
 
 

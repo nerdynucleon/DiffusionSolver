@@ -63,7 +63,7 @@ PROGRAM Diffusion_Solver
 	CALL repeat_input2(squares,circles,grid_h,D,sig_a,source_mat,T,R,L,B,iter,tol,converge,source_type)
 ! 	CALL error_check()
 ! Build and Iterate
-	CALL geometry(G,n,D,sig_a,source_mat)
+	CALL geometry(G,n,D,sig_a,source_mat,n_circles, n_squares, squares, circles,grid_h)
 	CALL geometry_out(G)
 !	CALL matrix()
 !	CALL iterate()
