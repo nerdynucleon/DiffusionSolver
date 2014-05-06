@@ -1,0 +1,9 @@
+MODULE input
+	IMPLICIT NONE
+CONTAINS
+
+	SUBROUTINE error_check()
+
+	END SUBROUTINE error_check
+
+END MODULE input

@@ -1,0 +1,82 @@
+GFORTRAN module version '6' created from output.f90 on Mon May  5 23:47:07 2014
+MD5:432ec5ea572d69ac6f590d96c7ac4424 -- If you edit this, you'll get what you deserve.
+
+(() () () () () () () () () () () () () () () () () () () () () () () ()
+() () ())
+
+()
+
+()
+
+()
+
+()
+
+()
+
+(2 'geometry_out' 'output' 'geometry_out' 1 ((PROCEDURE UNKNOWN-INTENT
+MODULE-PROC DECL UNKNOWN 0 0 SUBROUTINE ALWAYS_EXPLICIT) (UNKNOWN 0 0 0
+UNKNOWN ()) 3 0 (4) () 0 () () () 0 0)
+5 'output' 'output' 'output' 1 ((MODULE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN UNKNOWN 0 0) (UNKNOWN 0 0 0 UNKNOWN ()) 0 0 () () 0 () () () 0 0)
+6 'repeat_input1' 'output' 'repeat_input1' 1 ((PROCEDURE UNKNOWN-INTENT
+MODULE-PROC DECL UNKNOWN 0 0 SUBROUTINE) (UNKNOWN 0 0 0 UNKNOWN ()) 7 0
+(8 9 10 11) () 0 () () () 0 0)
+12 'repeat_input2' 'output' 'repeat_input2' 1 ((PROCEDURE UNKNOWN-INTENT
+MODULE-PROC DECL UNKNOWN 0 0 SUBROUTINE ALWAYS_EXPLICIT) (UNKNOWN 0 0 0
+UNKNOWN ()) 13 0 (14 15 16 17 18 19 20 21 22 23 24 25 26 27) () 0 () ()
+() 0 0)
+8 'n' '' 'n' 7 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0 DUMMY) (
+INTEGER 4 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
+9 'n_mat' '' 'n_mat' 7 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+DUMMY) (INTEGER 4 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
+10 'n_squares' '' 'n_squares' 7 ((VARIABLE IN UNKNOWN-PROC UNKNOWN
+UNKNOWN 0 0 DUMMY) (INTEGER 4 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
+11 'n_circles' '' 'n_circles' 7 ((VARIABLE IN UNKNOWN-PROC UNKNOWN
+UNKNOWN 0 0 DUMMY) (INTEGER 4 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
+14 'squares' '' 'squares' 13 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN
+0 0 ALLOCATABLE DIMENSION DUMMY) (REAL 4 0 0 REAL ()) 0 0 () (2 0
+DEFERRED () () () ()) 0 () () () 0 0)
+15 'circles' '' 'circles' 13 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN
+0 0 ALLOCATABLE DIMENSION DUMMY) (REAL 4 0 0 REAL ()) 0 0 () (2 0
+DEFERRED () () () ()) 0 () () () 0 0)
+16 'grid_h' '' 'grid_h' 13 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN UNKNOWN 0 0 DUMMY) (REAL 4 0 0 REAL ()) 0 0 () () 0 () () () 0 0)
+17 'd' '' 'd' 13 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+ALLOCATABLE DIMENSION DUMMY) (REAL 4 0 0 REAL ()) 0 0 () (1 0 DEFERRED ()
+()) 0 () () () 0 0)
+18 'sig_a' '' 'sig_a' 13 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+ALLOCATABLE DIMENSION DUMMY) (REAL 4 0 0 REAL ()) 0 0 () (1 0 DEFERRED ()
+()) 0 () () () 0 0)
+19 'source_mat' '' 'source_mat' 13 ((VARIABLE IN UNKNOWN-PROC UNKNOWN
+UNKNOWN 0 0 ALLOCATABLE DIMENSION DUMMY) (REAL 4 0 0 REAL ()) 0 0 () (1
+0 DEFERRED () ()) 0 () () () 0 0)
+20 't' '' 't' 13 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0 DUMMY) (
+CHARACTER 1 0 0 CHARACTER ((CONSTANT (INTEGER 4 0 0 INTEGER ()) 0 '1')))
+0 0 () () 0 () () () 0 0)
+21 'r' '' 'r' 13 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0 DUMMY) (
+CHARACTER 1 0 0 CHARACTER ((CONSTANT (INTEGER 4 0 0 INTEGER ()) 0 '1')))
+0 0 () () 0 () () () 0 0)
+22 'l' '' 'l' 13 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0 DUMMY) (
+CHARACTER 1 0 0 CHARACTER ((CONSTANT (INTEGER 4 0 0 INTEGER ()) 0 '1')))
+0 0 () () 0 () () () 0 0)
+23 'b' '' 'b' 13 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0 DUMMY) (
+CHARACTER 1 0 0 CHARACTER ((CONSTANT (INTEGER 4 0 0 INTEGER ()) 0 '1')))
+0 0 () () 0 () () () 0 0)
+24 'iter' '' 'iter' 13 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+DUMMY) (INTEGER 4 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
+25 'tol' '' 'tol' 13 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+DUMMY) (REAL 4 0 0 REAL ()) 0 0 () () 0 () () () 0 0)
+26 'converge' '' 'converge' 13 ((VARIABLE IN UNKNOWN-PROC UNKNOWN
+UNKNOWN 0 0 DUMMY) (CHARACTER 1 0 0 CHARACTER ((CONSTANT (INTEGER 4 0 0
+INTEGER ()) 0 '1'))) 0 0 () () 0 () () () 0 0)
+27 'source_type' '' 'source_type' 13 ((VARIABLE IN UNKNOWN-PROC UNKNOWN
+UNKNOWN 0 0 DUMMY) (CHARACTER 1 0 0 CHARACTER ((CONSTANT (INTEGER 4 0 0
+INTEGER ()) 0 '1'))) 0 0 () () 0 () () () 0 0)
+4 'g' '' 'g' 3 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+ALLOCATABLE DIMENSION DUMMY) (REAL 4 0 0 REAL ()) 0 0 () (3 0 DEFERRED ()
+() () () () ()) 0 () () () 0 0)
+)
+
+('geometry_out' 0 2 'output' 0 5 'repeat_input1' 0 6 'repeat_input2' 0
+12)
