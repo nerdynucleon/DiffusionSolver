@@ -15,9 +15,9 @@ PROGRAM Diffusion_Solver
 	if ( i /= 0 ) stop "Check that DiffusionInput Exists"
 	open(unit=2, file="DiffusionOutput", iostat=i, status="new", action="write")
 	if ( i /= 0 ) stop "DiffusionOutput already Exists"
-	open(unit=3, file="Geometry", iostat=i, status="new", action="write")
+	open(unit=3, file="Geometry.csv", iostat=i, status="new", action="write")
 	if ( i /= 0 ) stop "Geometry already Exists"
-	open(unit=4, file="Result", iostat=i, status="new", action="write")
+	open(unit=4, file="Result.csv", iostat=i, status="new", action="write")
 	if ( i /= 0 ) stop "Result already Exists"
 	
 	

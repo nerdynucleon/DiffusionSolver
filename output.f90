@@ -45,8 +45,8 @@ CONTAINS
 		IMPLICIT NONE
 		REAL, ALLOCATABLE, DIMENSION(:,:,:), INTENT(IN) :: G
 		WRITE(2,*) "Geometry"
-		WRITE(2,*) G
-		WRITE(3,*) G
+		WRITE(2,*) "See Geometry.csv for geometry"
+		WRITE(3,'(*(G0.10,:,","))') G
 	END SUBROUTINE geometry_out
 
 END MODULE output
