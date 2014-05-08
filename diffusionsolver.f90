@@ -12,7 +12,7 @@ PROGRAM Diffusion_Solver
 	REAL, ALLOCATABLE, DIMENSION(:,:,:) :: G
 	character(1) :: source_type, converge, T,R,L,B
 	! Solution Variables
-	REAL, ALLOCATABLE, DIMENSION(:) :: S, x_0, x, x_1
+	REAL, ALLOCATABLE, DIMENSION(:) :: S, x
 	REAL :: kay, kay_0
 
 	open(unit=1, file="DiffusionInput", iostat=i, status="old", action="read")
@@ -38,8 +38,6 @@ PROGRAM Diffusion_Solver
 	READ(1,*) n, n_mat
 	ALLOCATE(G(n-1,n-1,4))
 	ALLOCATE(A((n*n), (n*n)))
-	ALLOCATE(x_0(n * n))
-	ALLOCATE(x_1(n * n))
 	ALLOCATE(x(n * n))
 	ALLOCATE(S(n * n))
 	! Number of Shapes
@@ -84,7 +82,7 @@ PROGRAM Diffusion_Solver
 	CALL matrix(n, A, G, L, R, T, B, grid_h, S)
 	!CALL matrix_out(A)
 
-	CALL solve(n,A,S,x_0,x_1,x,tol,converge,iter,source_type, kay, kay_0) 
+	CALL solve(n,A,S,x,tol,converge,iter,source_type, kay, kay_0) 
 ! Output
 	CALL solution_out(x, source_type, kay)
 	CALL done()

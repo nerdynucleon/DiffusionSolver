@@ -95,21 +95,25 @@ CONTAINS
 	END FUNCTION inside
 
 
-	SUBROUTINE jacobi(n,A,b,x_0,x,tol,converge,iter)
+	SUBROUTINE jacobi(n,A,b,x,tol,converge,iter)
 		IMPLICIT NONE
 		INTEGER, INTENT(IN) :: n, iter
 		REAL, DIMENSION(:,:), INTENT(IN) :: A
 		REAL, DIMENSION(:), INTENT(IN) :: b
 		REAL, INTENT(IN) :: tol
 		CHARACTER, INTENT(IN) :: converge
-		REAl, DIMENSION(:), INTENT(INOUT) :: x, x_0
+		REAl, DIMENSION(:), INTENT(INOUT) :: x
+		REAL, ALLOCATABLE, DIMENSION(:) :: x_0, error_vec
 
 		INTEGER :: num, i, j
 		REAL :: error, sum
-		REAL, DIMENSION(n) :: error_vec
+
 
 		num = 0
 		error = tol + 1
+		ALLOCATE(error_vec(n))
+		ALLOCATE(x_0(n))
+		x_0 = 0
 
 
 		DO WHILE (error > tol)
@@ -128,7 +132,7 @@ CONTAINS
 				x(i) = (b(i) - sum)/A(i,i)
 			END DO
 
-			error_vec = ABS(x-x_0)
+			error_vec = ABS(x - x_0)
 
 			IF (converge == 'A') THEN
 				error = dot_product(error_vec,error_vec) ! Absolute error
@@ -148,12 +152,12 @@ CONTAINS
 		END DO
 	END SUBROUTINE jacobi
 
-	SUBROUTINE solve(n,A,S,x_0,x_1,x,tol,converge,iter, source_type, kay, kay_0)
+	SUBROUTINE solve(n,A,S,x,tol,converge,iter, source_type, kay, kay_0)
 		IMPLICIT NONE
 		INTEGER :: k, m, z
 		INTEGER, INTENT(IN) :: n, iter
 		REAl, INTENT(IN) :: tol
-		REAL, DIMENSION(:), INTENT(INOUT) :: x, x_0, x_1
+		REAL, DIMENSION(:), INTENT(INOUT) :: x
 		REAL, DIMENSION(:,:), INTENT(IN) :: A
 		REAL, DIMENSION(:), INTENT(IN) :: S
 		CHARACTER, INTENT(IN) :: converge, source_type
@@ -163,32 +167,30 @@ CONTAINS
 
 		!Create Flux iterators
 		DO k = 1, (n * n)
-			x_0(k) = 0
-			x_1(k) = .5
 			x(k) = 1
 		END DO
 
 		IF (source_type == 'Q') THEN
-			CALL jacobi((n * n),A,S,x_0,x,tol,converge,iter)
+			CALL jacobi((n * n),A,S,x,tol,converge,iter)
 			kay = 0
 			kay_0 = 0
 		ELSE
-			kay = 1.1
-			kay_0 = 1
-			CALL power(tol, S, kay, kay_0, x_0, x_1, x, converge, iter, A, n)
+			kay = 1
+			kay_0 = 0
+			CALL power(tol, S, kay, kay_0, x, converge, iter, A, n)
 		END IF
 
 	END SUBROUTINE solve
 
-	SUBROUTINE power(tol, S, kay, kay_0, x_0, x_1, x, converge, iter, A, n)
+	SUBROUTINE power(tol, S, kay, kay_0, x, converge, iter, A, n)
 		IMPLICIT NONE
-		REAL, ALLOCATABLE, DIMENSION(:) :: Q, Q_0, error_vec, b
+		REAL, ALLOCATABLE, DIMENSION(:) :: Q, Q_0, error_vec, x_0
 		REAL :: error1, error2, sum1, sum2
 		INTEGER :: num, k
 		REAL, INTENT(IN) :: tol
 		REAL, DIMENSION(:,:), INTENT(IN) :: A
 		REAL, DIMENSION(:), INTENT(IN) :: S 
-		REAL, DIMENSION(:), INTENT(INOUT) :: x_0, x_1, x
+		REAL, DIMENSION(:), INTENT(INOUT) :: x
 		REAL, INTENT(INOUT) :: kay, kay_0
 		CHARACTER, INTENT(IN) :: converge
 		INTEGER, INTENT(IN) :: iter, n
@@ -196,34 +198,36 @@ CONTAINS
 		ALLOCATE(Q( (n*n) ))
 		ALLOCATE(Q_0( (n*n) ))
 		ALLOCATE(error_vec( (n*n) ))
-		ALLOCATE(b( (n * n) ))
+		ALLOCATE(x_0( (n * n) ))
+		x_0 = 0
 		error1 = tol + 1
 		error2 = tol + 1
 		num = 0
 
 
 		DO k = 1, (n * n)
-			Q_0(k) = ( S(k) * x(k) )
-			b(k) = Q_0(k) / kay_0
+			Q(k) = ( S(k) * x(k) )
 		END DO
+		Q_0 = Q
 
 		DO WHILE ((error1 > tol) .OR. (error2 > tol))
 			num = num + 1
 			sum1 = 0
 			sum2 = 0
-			x_0 = x_1
-			x_1 = x
-			CALL jacobi((n * n),A,b,x_0,x,tol,converge,iter)
+			x_0 = x
+			kay_0 = kay
+			Q_0 = Q
+
+
+			CALL jacobi((n * n),A,(Q / kay),x,tol,converge,iter)
 			DO k = 1, (n * n)
 				Q(k) = ( S(k) * x(k) )
 				sum1 = sum1 + Q(k)
 				sum2 = sum2 + Q_0(k)
 			END DO
 			kay = kay_0 * (sum1 / sum2)
-			Q_0 = Q
-			b = Q / kay
 
-			error_vec = ABS(x - x_1)
+			error_vec = ABS(x - x_0)
 
 			IF (converge == 'A') THEN
 				error1 = (kay - kay_0)
@@ -237,9 +241,6 @@ CONTAINS
 				PRINT *, 'Failed to converge. Consider raising iteration count.'
 				STOP
 			END IF
-
-			kay_0 = kay
-
 		END DO
 
 
