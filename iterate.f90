@@ -163,9 +163,9 @@ CONTAINS
 
 		!Create Flux iterators
 		DO k = 1, (n * n)
-			x_0(k) = 1
-			x_1(k) = 1.5
-			x(k) = 2
+			x_0(k) = 0
+			x_1(k) = .5
+			x(k) = 1
 		END DO
 
 		IF (source_type == 'Q') THEN
