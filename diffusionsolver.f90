@@ -80,7 +80,7 @@ PROGRAM Diffusion_Solver
 	CALL geometry_out(G)
 
 	CALL matrix(n, A, G, L, R, T, B, grid_h, S)
-	CALL matrix_out(A)
+	!CALL matrix_out(A)
 
 	CALL solve(n,A,S,x_0,x,tol,converge,iter) 
 ! Output
