@@ -52,7 +52,7 @@ CONTAINS
 
 	SUBROUTINE corners(n, G, A, grid_h, L, T, R, B, S)
 		IMPLICIT NONE
-		REAL :: left, right, bottom, top, loss, center, inf
+		REAL :: left, right, bottom, top, loss, center
 		INTEGER :: i, j, k
 		INTEGER, INTENT(IN) :: n
 		REAL, DIMENSION(:,:,:), INTENT(IN) :: G
@@ -60,77 +60,78 @@ CONTAINS
 		REAL, INTENT(IN) :: grid_h
 		CHARACTER, INTENT(IN) :: L, T, R, B
 		REAL, DIMENSION(:), INTENT(INOUT) :: S
-		inf = huge(1.)
-		inf = inf * 2
+
 
 		! Bottom Left
 		k = 1
 		CALL indices(i, j, k, n)
-		!Source
-		center = ( G(i + 1, j + 1, 3)*grid_h*grid_h )/4
-		S(k) = center
-		IF (B == 'R') THEN
-			!grid h kept for expandibility
-			left = 0
-			right = -( G(i + 1, j + 1, 1)*grid_h)/(grid_h)
-			bottom = 0
-			top = -( G(i + 1, j + 1, 1)*grid_h)/(grid_h)
-			loss = ( G(i + 1,j + 1, 2)*grid_h*grid_h )/4
-			center = loss - (left + right + bottom + top)
 
-			!Assigning Values
-			A(k, k) = center
-			A(k + 1, k) = right
-			A(k + n, k) = top
+		!grid h kept for expandibility
+		left = 0
+		right = -( G(i + 1, j + 1, 1)*grid_h)/(grid_h)
+		bottom = 0
+		top = -( G(i + 1, j + 1, 1)*grid_h)/(grid_h)
+		loss = ( G(i + 1,j + 1, 2)*grid_h*grid_h )/4
+		center = loss - (left + right + bottom + top)
+		!Assigning Values
+		A(k, k) = center
+		A(k + 1, k) = right
+		A(k + n, k) = top
+
+		!Source
+		IF (B == 'R') THEN
+			center = ( G(i + 1, j + 1, 3)*grid_h*grid_h )/4
+			S(k) = center
 		ELSE
-			A(k,k) = inf
+			S(k) = 0
 		END IF
+
 
 		! Botton Right
 		k = n
 		CALL indices(i, j, k, n)
-		!Source
-		center = (G(i, j + 1, 3)*grid_h*grid_h)/4
-		S(k) = center
-		IF (R == 'R') THEN
-			!grid h kept for expandibility
-			left = -( G(i, j + 1, 1)*grid_h)/(grid_h)
-			right = 0
-			bottom = 0
-			top = -( G(i, j + 1, 1)*grid_h )/(grid_h)
-			loss = ( G(i, j + 1, 2)*grid_h*grid_h)/4
-			center = loss - (left + right + bottom + top)
+		!grid h kept for expandibility
+		left = -( G(i, j + 1, 1)*grid_h)/(grid_h)
+		right = 0
+		bottom = 0
+		top = -( G(i, j + 1, 1)*grid_h )/(grid_h)
+		loss = ( G(i, j + 1, 2)*grid_h*grid_h)/4
+		center = loss - (left + right + bottom + top)
 
-			!Assigning Values
-			A(k, k) = center
-			A(k - 1, k) = left
-			A(k + n, k) = top
+		!Assigning Values
+		A(k, k) = center
+		A(k - 1, k) = left
+		A(k + n, k) = top
+
+		!Source
+		IF (R == 'R') THEN
+			center = (G(i, j + 1, 3)*grid_h*grid_h)/4
+			S(k) = center
 		ELSE
-			A(k,k)=Inf
+			S(k) = 0
 		END IF
 
 		! Top Left
 		k = ((n * (n - 1)) + 1)
 		CALL indices(i, j, k, n)
+		!grid h kept for expandibility
+		left = 0
+		right = -( G(i + 1, j, 1)*grid_h )/(grid_h)
+		bottom = -( G(i + 1, j, 1)*grid_h)/(grid_h)
+		top = 0
+		loss = (G(i + 1, j, 2)*grid_h*grid_h )/4
+		center = loss - (left + right + bottom + top)
 
+		!Assigning Values
+		A(k, k) = center
+		A(k + 1, k) = right
+		A(k - n, k) = bottom
 		!Source
-		center = ( G(i + 1, j, 3)*grid_h*grid_h )/4
-		S(k) = center
 		IF (L == 'R') THEN
-			!grid h kept for expandibility
-			left = 0
-			right = -( G(i + 1, j, 1)*grid_h )/(grid_h)
-			bottom = -( G(i + 1, j, 1)*grid_h)/(grid_h)
-			top = 0
-			loss = (G(i + 1, j, 2)*grid_h*grid_h )/4
-			center = loss - (left + right + bottom + top)
-
-			!Assigning Values
-			A(k, k) = center
-			A(k + 1, k) = right
-			A(k - n, k) = bottom
+			center = ( G(i + 1, j, 3)*grid_h*grid_h )/4
+			S(k) = center
 		ELSE
-			A(k,k)=inf
+			S(k) = 0
 		END IF
 
 
@@ -138,169 +139,154 @@ CONTAINS
 		k = n * n
 		CALL indices(i, j, k, n)
 
+		!grid h kept for expandibility
+		left = -( G(i, j, 1)*grid_h )/(grid_h)
+		right = 0
+		bottom = -( G(i, j, 1)*grid_h )/(grid_h)
+		top = 0
+		loss = (G(i, j, 2)*grid_h*grid_h )/4
+		center = loss - (left + right + bottom + top)
 
+		!Assigning Values
+		A(k, k) = center
+		A(k - 1, k) = left
+		A(k - n, k) = bottom
 		!Source
-		center = ( G(i + 1, j + 1, 3)*grid_h*grid_h )/4
-		S(k) = center
-		IF (T == 'R') THEN
-			!grid h kept for expandibility
-			left = -( G(i, j, 1)*grid_h )/(grid_h)
-			right = 0
-			bottom = -( G(i, j, 1)*grid_h )/(grid_h)
-			top = 0
-			loss = (G(i, j, 2)*grid_h*grid_h )/4
-			center = loss - (left + right + bottom + top)
 
-			!Assigning Values
-			A(k, k) = center
-			A(k - 1, k) = left
-			A(k - n, k) = bottom
+		IF (T == 'R') THEN
+			center = ( G(i + 1, j + 1, 3)*grid_h*grid_h )/4
+			S(k) = center
 		ELSE
-			A(k,k) = inf
+			S(k) = 0
 		END IF
 
 	END SUBROUTINE corners
 
 	SUBROUTINE left_conditions(i, j, k, n, G, A, grid_h, L, S)
 		IMPLICIT NONE
-		REAL :: left, right, bottom, top, loss, center, inf
+		REAL :: left, right, bottom, top, loss, center
 		INTEGER, INTENT(IN) :: i, j, k, n
 		REAL, DIMENSION(:,:,:), INTENT(IN) :: G
 		REAL, DIMENSION(:,:), INTENT(INOUT) :: A
 		REAL, INTENT(IN) :: grid_h
 		CHARACTER, INTENT(IN) :: L
 		REAL, DIMENSION(:), INTENT(INOUT) :: S
-		inf = huge(1.)
-		inf = inf * 2
 
+		!grid h kept for expandibility
+		left = 0
+		right = -( G(i + 1, j, 1)*grid_h + G(i + 1, j + 1, 1)*grid_h)/(2*grid_h)
+		bottom = -( G(i + 1, j, 1)*grid_h)/(grid_h)
+		top = -( G(i + 1,j + 1, 1)*grid_h)/(grid_h)
+		loss = (G(i + 1, j, 2)*grid_h*grid_h + G(i + 1,j + 1,2)*grid_h*grid_h)/4
+		center = loss - (left + right + bottom + top)
+
+		!Assigning Values
+		A(k, k) = center
+		A(k + 1, k) = right
+		A(k - n, k) = bottom
+		A(k + n, k) = top
 		!Source
-		center = ( G(i + 1, j, 3)*grid_h*grid_h + G(i + 1, j + 1, 3)*grid_h*grid_h )/4
-		S(k) = center
-
 		IF (L == 'R') THEN
-			!grid h kept for expandibility
-			left = 0
-			right = -( G(i + 1, j, 1)*grid_h + G(i + 1, j + 1, 1)*grid_h)/(2*grid_h)
-			bottom = -( G(i + 1, j, 1)*grid_h)/(grid_h)
-			top = -( G(i + 1,j + 1, 1)*grid_h)/(grid_h)
-			loss = (G(i + 1, j, 2)*grid_h*grid_h + G(i + 1,j + 1,2)*grid_h*grid_h)/4
-			center = loss - (left + right + bottom + top)
-
-			!Assigning Values
-			A(k, k) = center
-			A(k + 1, k) = right
-			A(k - n, k) = bottom
-			A(k + n, k) = top
+			center = ( G(i + 1, j, 3)*grid_h*grid_h + G(i + 1, j + 1, 3)*grid_h*grid_h )/4
+			S(k) = center
 		ELSE
-			A(k,k)= inf
+			S(k) = 0
 		END IF
 	END SUBROUTINE left_conditions
 
 	SUBROUTINE right_conditions(i, j, k, n, G, A, grid_h, R, S)
 		IMPLICIT NONE
-		REAL :: left, right, bottom, top, loss, center, inf
+		REAL :: left, right, bottom, top, loss, center
 		INTEGER, INTENT(IN) :: i, j, k, n
 		REAL, DIMENSION(:,:,:), INTENT(IN) :: G
 		REAL, DIMENSION(:,:), INTENT(INOUT) :: A
 		REAL, INTENT(IN) :: grid_h
 		CHARACTER, INTENT(IN) :: R
 		REAL, DIMENSION(:), INTENT(INOUT) :: S
-		inf = huge(1.)
-		inf = inf * 2
+		!grid h kept for expandibility
+		left = -( G(i, j, 1)*grid_h + G(i, j + 1, 1)*grid_h)/(2*grid_h)
+		right = 0
+		bottom = -( G(i, j, 1)*grid_h )/(grid_h)
+		top = -( G(i, j + 1, 1)*grid_h )/(grid_h)
+		loss = (G(i, j, 2)*grid_h*grid_h + G(i, j + 1, 2)*grid_h*grid_h)/4
+		center = loss - (left + right + bottom + top)
 
+		!Assigning Values
+		A(k, k) = center
+		A(k - 1, k) = left
+		A(k - n, k) = bottom
+		A(k + n, k) = top
 		!Source
-		center = (G(i, j, 3)*grid_h*grid_h + G(i, j + 1, 3)*grid_h*grid_h)/4
-		S(k) = center
-
 		IF (R == 'R') THEN
-			!grid h kept for expandibility
-			left = -( G(i, j, 1)*grid_h + G(i, j + 1, 1)*grid_h)/(2*grid_h)
-			right = 0
-			bottom = -( G(i, j, 1)*grid_h )/(grid_h)
-			top = -( G(i, j + 1, 1)*grid_h )/(grid_h)
-			loss = (G(i, j, 2)*grid_h*grid_h + G(i, j + 1, 2)*grid_h*grid_h)/4
-			center = loss - (left + right + bottom + top)
-
-			!Assigning Values
-			A(k, k) = center
-			A(k - 1, k) = left
-			A(k - n, k) = bottom
-			A(k + n, k) = top
+			center = (G(i, j, 3)*grid_h*grid_h + G(i, j + 1, 3)*grid_h*grid_h)/4
+			S(k) = center
 		ELSE
-			A(k,k) = inf
-
+			S(k) = 0
 		END IF
 
 	END SUBROUTINE right_conditions
 
 	SUBROUTINE bottom_conditions(i, j, k, n, G, A, grid_h, B, S)
 		IMPLICIT NONE
-		REAL :: left, right, bottom, top, loss, center, inf
+		REAL :: left, right, bottom, top, loss, center
 		INTEGER, INTENT(IN) :: i, j, k, n
 		REAL, DIMENSION(:,:,:), INTENT(IN) :: G
 		REAL, DIMENSION(:,:), INTENT(INOUT) :: A
 		REAL, INTENT(IN) :: grid_h
 		CHARACTER, INTENT(IN) :: B
 		REAL, DIMENSION(:), INTENT(INOUT) :: S
-		inf = huge(1.)
-		inf = inf * 2
+		!grid h kept for expandibility
+		left = -(  G(i, j + 1, 1)*grid_h)/(grid_h)
+		right = -( G(i + 1, j + 1, 1)*grid_h)/(grid_h)
+		bottom = 0
+		top = -( G(i, j + 1 ,1)*grid_h + G(i + 1, j + 1, 1)*grid_h)/(2*grid_h)
+		loss = (G(i + 1,j + 1, 2)*grid_h*grid_h + G(i, j + 1, 2)*grid_h*grid_h)/4
+		center = loss - (left + right + bottom + top)
 
+		!Assigning Values
+		A(k, k) = center
+		A(k - 1, k) = left
+		A(k + 1, k) = right
+		A(k + n, k) = top
 		!Source
-		center = ( G(i + 1, j + 1, 3)*grid_h*grid_h + G(i, j + 1, 3)*grid_h*grid_h)/4
-		S(k) = center
-
 		IF (B == 'R') THEN
-			!grid h kept for expandibility
-			left = -(  G(i, j + 1, 1)*grid_h)/(grid_h)
-			right = -( G(i + 1, j + 1, 1)*grid_h)/(grid_h)
-			bottom = 0
-			top = -( G(i, j + 1 ,1)*grid_h + G(i + 1, j + 1, 1)*grid_h)/(2*grid_h)
-			loss = (G(i + 1,j + 1, 2)*grid_h*grid_h + G(i, j + 1, 2)*grid_h*grid_h)/4
-			center = loss - (left + right + bottom + top)
-
-			!Assigning Values
-			A(k, k) = center
-			A(k - 1, k) = left
-			A(k + 1, k) = right
-			A(k + n, k) = top
+			center = ( G(i + 1, j + 1, 3)*grid_h*grid_h + G(i, j + 1, 3)*grid_h*grid_h)/4
+			S(k) = center
 		ELSE
-			A(k,k)=inf
+			S(k) = 0
 		END IF
 
 	END SUBROUTINE bottom_conditions
 
 	SUBROUTINE top_conditions(i, j, k, n, G, A, grid_h, T, S)
 		IMPLICIT NONE
-		REAL :: left, right, bottom, top, loss, center, inf
+		REAL :: left, right, bottom, top, loss, center
 		INTEGER, INTENT(IN) :: i, j, k, n
 		REAL, DIMENSION(:,:,:), INTENT(IN) :: G
 		REAL, DIMENSION(:,:), INTENT(INOUT) :: A
 		REAL, INTENT(IN) :: grid_h
 		CHARACTER, INTENT(IN) :: T
 		REAL, DIMENSION(:), INTENT(INOUT) :: S
-		inf = huge(1.)
-		inf = inf * 2
+		!grid h kept for expandibility
+		left = -( G(i, j, 1)*grid_h )/(grid_h)
+		right = -( G(i + 1, j, 1)*grid_h )/(grid_h)
+		bottom = -( G(i, j, 1)*grid_h + G(i + 1, j, 1)*grid_h)/(2*grid_h)
+		top = 0
+		loss = (G(i, j, 2)*grid_h*grid_h + G(i + 1, j, 2)*grid_h*grid_h)/4
+		center = loss - (left + right + bottom + top)
+
+		!Assigning Values
+		A(k, k) = center
+		A(k - 1, k) = left
+		A(k + 1, k) = right
+		A(k - n, k) = bottom
 
 		!Source
-		center = (G(i, j, 3)*grid_h*grid_h + G(i + 1, j, 3)*grid_h*grid_h )/4
-		S(k) = center
-
 		IF (T == 'R') THEN
-			!grid h kept for expandibility
-			left = -( G(i, j, 1)*grid_h )/(grid_h)
-			right = -( G(i + 1, j, 1)*grid_h )/(grid_h)
-			bottom = -( G(i, j, 1)*grid_h + G(i + 1, j, 1)*grid_h)/(2*grid_h)
-			top = 0
-			loss = (G(i, j, 2)*grid_h*grid_h + G(i + 1, j, 2)*grid_h*grid_h)/4
-			center = loss - (left + right + bottom + top)
-
-			!Assigning Values
-			A(k, k) = center
-			A(k - 1, k) = left
-			A(k + 1, k) = right
-			A(k - n, k) = bottom
+			center = (G(i, j, 3)*grid_h*grid_h + G(i + 1, j, 3)*grid_h*grid_h )/4
+			S(k) = center
 		ELSE
-			A(k,k) = inf
+			S(k) = 0
 		END IF
 
 	END SUBROUTINE top_conditions
@@ -333,9 +319,6 @@ CONTAINS
 		A(k + 1, k) = right
 		A(k - n, k) = bottom
 		A(k + n, k) = top
-
-
-
 	END SUBROUTINE general_conditions
 
 
