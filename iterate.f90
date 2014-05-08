@@ -147,6 +147,7 @@ CONTAINS
 
 			END IF
 
+
 			x_0 = x ! Modify Guess
 
 		END DO
@@ -241,6 +242,9 @@ CONTAINS
 				PRINT *, 'Failed to converge. Consider raising iteration count.'
 				STOP
 			END IF
+
+			print *, 'power: iteration count', num, 'error 1:', error1, 'error 2:', error2
+
 		END DO
 
 

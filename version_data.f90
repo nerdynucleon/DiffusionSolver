@@ -4,7 +4,7 @@ MODULE version_data
 	CHARACTER(8) :: end_date
 	CHARACTER(10) :: end_time
 	CHARACTER(10) :: zone
-	CHARACTER(12) ::Version= "Version 0.2 "
+	CHARACTER(12) ::Version= "Version 0.9 "
 	CHARACTER(17):: Title="Diffusion Solver "
 	CHARACTER(28) ::Authors="Uday Mehta | Alexandre Chong"
 CONTAINS

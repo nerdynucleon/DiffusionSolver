@@ -52,7 +52,7 @@ CONTAINS
 
 	SUBROUTINE corners(n, G, A, grid_h, L, T, R, B, S)
 		IMPLICIT NONE
-		REAL :: left, right, bottom, top, loss, center
+		REAL :: left, right, bottom, top, loss, center, inf
 		INTEGER :: i, j, k
 		INTEGER, INTENT(IN) :: n
 		REAL, DIMENSION(:,:,:), INTENT(IN) :: G
@@ -60,6 +60,8 @@ CONTAINS
 		REAL, INTENT(IN) :: grid_h
 		CHARACTER, INTENT(IN) :: L, T, R, B
 		REAL, DIMENSION(:), INTENT(INOUT) :: S
+		inf = huge(1.)
+		inf = inf * 2
 
 		! Bottom Left
 		k = 1
@@ -80,6 +82,8 @@ CONTAINS
 			A(k, k) = center
 			A(k + 1, k) = right
 			A(k + n, k) = top
+		ELSE
+			A(k,k) = inf
 		END IF
 
 		! Botton Right
@@ -101,6 +105,8 @@ CONTAINS
 			A(k, k) = center
 			A(k - 1, k) = left
 			A(k + n, k) = top
+		ELSE
+			A(k,k)=Inf
 		END IF
 
 		! Top Left
@@ -123,6 +129,8 @@ CONTAINS
 			A(k, k) = center
 			A(k + 1, k) = right
 			A(k - n, k) = bottom
+		ELSE
+			A(k,k)=inf
 		END IF
 
 
@@ -147,19 +155,23 @@ CONTAINS
 			A(k, k) = center
 			A(k - 1, k) = left
 			A(k - n, k) = bottom
+		ELSE
+			A(k,k) = inf
 		END IF
 
 	END SUBROUTINE corners
 
 	SUBROUTINE left_conditions(i, j, k, n, G, A, grid_h, L, S)
 		IMPLICIT NONE
-		REAL :: left, right, bottom, top, loss, center
+		REAL :: left, right, bottom, top, loss, center, inf
 		INTEGER, INTENT(IN) :: i, j, k, n
 		REAL, DIMENSION(:,:,:), INTENT(IN) :: G
 		REAL, DIMENSION(:,:), INTENT(INOUT) :: A
 		REAL, INTENT(IN) :: grid_h
 		CHARACTER, INTENT(IN) :: L
 		REAL, DIMENSION(:), INTENT(INOUT) :: S
+		inf = huge(1.)
+		inf = inf * 2
 
 		!Source
 		center = ( G(i + 1, j, 3)*grid_h*grid_h + G(i + 1, j + 1, 3)*grid_h*grid_h )/4
@@ -179,18 +191,22 @@ CONTAINS
 			A(k + 1, k) = right
 			A(k - n, k) = bottom
 			A(k + n, k) = top
+		ELSE
+			A(k,k)= inf
 		END IF
 	END SUBROUTINE left_conditions
 
 	SUBROUTINE right_conditions(i, j, k, n, G, A, grid_h, R, S)
 		IMPLICIT NONE
-		REAL :: left, right, bottom, top, loss, center
+		REAL :: left, right, bottom, top, loss, center, inf
 		INTEGER, INTENT(IN) :: i, j, k, n
 		REAL, DIMENSION(:,:,:), INTENT(IN) :: G
 		REAL, DIMENSION(:,:), INTENT(INOUT) :: A
 		REAL, INTENT(IN) :: grid_h
 		CHARACTER, INTENT(IN) :: R
 		REAL, DIMENSION(:), INTENT(INOUT) :: S
+		inf = huge(1.)
+		inf = inf * 2
 
 		!Source
 		center = (G(i, j, 3)*grid_h*grid_h + G(i, j + 1, 3)*grid_h*grid_h)/4
@@ -210,6 +226,8 @@ CONTAINS
 			A(k - 1, k) = left
 			A(k - n, k) = bottom
 			A(k + n, k) = top
+		ELSE
+			A(k,k) = inf
 
 		END IF
 
@@ -217,13 +235,15 @@ CONTAINS
 
 	SUBROUTINE bottom_conditions(i, j, k, n, G, A, grid_h, B, S)
 		IMPLICIT NONE
-		REAL :: left, right, bottom, top, loss, center
+		REAL :: left, right, bottom, top, loss, center, inf
 		INTEGER, INTENT(IN) :: i, j, k, n
 		REAL, DIMENSION(:,:,:), INTENT(IN) :: G
 		REAL, DIMENSION(:,:), INTENT(INOUT) :: A
 		REAL, INTENT(IN) :: grid_h
 		CHARACTER, INTENT(IN) :: B
 		REAL, DIMENSION(:), INTENT(INOUT) :: S
+		inf = huge(1.)
+		inf = inf * 2
 
 		!Source
 		center = ( G(i + 1, j + 1, 3)*grid_h*grid_h + G(i, j + 1, 3)*grid_h*grid_h)/4
@@ -243,19 +263,23 @@ CONTAINS
 			A(k - 1, k) = left
 			A(k + 1, k) = right
 			A(k + n, k) = top
+		ELSE
+			A(k,k)=inf
 		END IF
 
 	END SUBROUTINE bottom_conditions
 
 	SUBROUTINE top_conditions(i, j, k, n, G, A, grid_h, T, S)
 		IMPLICIT NONE
-		REAL :: left, right, bottom, top, loss, center
+		REAL :: left, right, bottom, top, loss, center, inf
 		INTEGER, INTENT(IN) :: i, j, k, n
 		REAL, DIMENSION(:,:,:), INTENT(IN) :: G
 		REAL, DIMENSION(:,:), INTENT(INOUT) :: A
 		REAL, INTENT(IN) :: grid_h
 		CHARACTER, INTENT(IN) :: T
 		REAL, DIMENSION(:), INTENT(INOUT) :: S
+		inf = huge(1.)
+		inf = inf * 2
 
 		!Source
 		center = (G(i, j, 3)*grid_h*grid_h + G(i + 1, j, 3)*grid_h*grid_h )/4
@@ -275,6 +299,8 @@ CONTAINS
 			A(k - 1, k) = left
 			A(k + 1, k) = right
 			A(k - n, k) = bottom
+		ELSE
+			A(k,k) = inf
 		END IF
 
 	END SUBROUTINE top_conditions
