@@ -95,13 +95,13 @@ CONTAINS
 	END FUNCTION inside
 
 
-	SUBROUTINE jacobi(n,A,b,x,tol,converge,iter)
+	SUBROUTINE jacobi(n,A,b,x,tol,converge,iter, source_type)
 		IMPLICIT NONE
 		INTEGER, INTENT(IN) :: n, iter
 		REAL, DIMENSION(:,:), INTENT(IN) :: A
 		REAL, DIMENSION(:), INTENT(IN) :: b
 		REAL, INTENT(IN) :: tol
-		CHARACTER, INTENT(IN) :: converge
+		CHARACTER, INTENT(IN) :: converge, source_type
 		REAl, DIMENSION(:), INTENT(INOUT) :: x
 		REAL, ALLOCATABLE, DIMENSION(:) :: x_0, error_vec
 
@@ -147,6 +147,10 @@ CONTAINS
 
 			END IF
 
+			IF (source_type == 'Q') THEN
+				print *, "iteration count: ", num
+			END IF
+
 
 			x_0 = x ! Modify Guess
 
@@ -172,7 +176,7 @@ CONTAINS
 		END DO
 
 		IF (source_type == 'Q') THEN
-			CALL jacobi((n * n),A,S,x,tol,converge,iter)
+			CALL jacobi((n * n),A,S,x,tol,converge,iter,source_type)
 			kay = 0
 			kay_0 = 0
 		ELSE
@@ -220,7 +224,7 @@ CONTAINS
 			Q_0 = Q
 
 
-			CALL jacobi((n * n),A,(Q / kay),x,tol,converge,iter)
+			CALL jacobi((n * n),A,(Q / kay),x,tol,converge,iter,'F')
 			DO k = 1, (n * n)
 				Q(k) = ( S(k) * x(k) )
 				sum1 = sum1 + Q(k)
@@ -243,7 +247,7 @@ CONTAINS
 				STOP
 			END IF
 
-			print *, 'power: iteration count', num, 'error 1:', error1, 'error 2:', error2
+			print *, 'power iteration count:', num, 'error 1:', error1, 'error 2:', error2
 
 		END DO
 
