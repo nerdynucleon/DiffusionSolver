@@ -50,13 +50,13 @@ Compiling
 =========
 Ubuntu 13.0 terminal:
 ```
-$ gfortran diffusionsolver.f90 version_data.f90 -o main.out
+$ gfortran diffusionsolver.f90 version_data.f90 input.f90 output.f90 iterate.f90 matrix_mod.f90 -o diffusionsolver.out
 ```
 Executing
 ==========
 Ubuntu 13.0 terminal:
 ```
-$ ./a.out
+$ ./diffusionsolver.out
 ```
 Note:
 DiffusionInput must exist
