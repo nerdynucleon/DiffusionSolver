@@ -57,11 +57,18 @@ CONTAINS
 		WRITE(4,'(*(G0.10,:,","))') A
 	END SUBROUTINE matrix_out
 
-	SUBROUTINE solution_out(x)
+	SUBROUTINE solution_out(x, source_type, kay)
+		IMPLICIT NONE
+		CHARACTER, INTENT(IN) :: source_type
+		REAL, INTENT(IN) :: kay
 		REAL, DIMENSION(:), INTENT(IN) :: x
-		WRITE(2,*) "flux:"
+		WRITE(2,*) "Flux:"
 		WRITE(2,*) "See results.csv for solution"
 		WRITE(5,'(*(G0.10,:,","))') x
+		IF (source_type == 'F') THEN
+			WRITE(2,*) "k:"
+			WRITE(2,*) kay
+		END IF
 	END SUBROUTINE solution_out
 
 

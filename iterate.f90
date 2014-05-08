@@ -148,26 +148,102 @@ CONTAINS
 		END DO
 	END SUBROUTINE jacobi
 
-	SUBROUTINE solve(n,A,S,x_0,x,tol,converge,iter)
+	SUBROUTINE solve(n,A,S,x_0,x_1,x,tol,converge,iter, source_type, kay, kay_0)
 		IMPLICIT NONE
 		INTEGER :: k, m, z
 		INTEGER, INTENT(IN) :: n, iter
 		REAl, INTENT(IN) :: tol
-		REAL, DIMENSION(:), INTENT(INOUT) :: x, x_0
+		REAL, DIMENSION(:), INTENT(INOUT) :: x, x_0, x_1
 		REAL, DIMENSION(:,:), INTENT(IN) :: A
 		REAL, DIMENSION(:), INTENT(IN) :: S
-		CHARACTER, INTENT(IN) :: converge
+		CHARACTER, INTENT(IN) :: converge, source_type
+		REAL, INTENT(INOUT) :: kay, kay_0
 
 		PRINT *, "Solving..."
 
 		!Create Flux iterators
 		DO k = 1, (n * n)
-			x_0(k) = 0
-			x(k) = 1
+			x_0(k) = 1
+			x_1(k) = 1.5
+			x(k) = 2
 		END DO
 
-		CALL jacobi((n * n),A,S,x_0,x,tol,converge,iter)
+		IF (source_type == 'Q') THEN
+			CALL jacobi((n * n),A,S,x_0,x,tol,converge,iter)
+			kay = 0
+			kay_0 = 0
+		ELSE
+			kay = 1.1
+			kay_0 = 1
+			CALL power(tol, S, kay, kay_0, x_0, x_1, x, converge, iter, A, n)
+		END IF
 
 	END SUBROUTINE solve
+
+	SUBROUTINE power(tol, S, kay, kay_0, x_0, x_1, x, converge, iter, A, n)
+		IMPLICIT NONE
+		REAL, ALLOCATABLE, DIMENSION(:) :: Q, Q_0, error_vec, b
+		REAL :: error1, error2, sum1, sum2
+		INTEGER :: num, k
+		REAL, INTENT(IN) :: tol
+		REAL, DIMENSION(:,:), INTENT(IN) :: A
+		REAL, DIMENSION(:), INTENT(IN) :: S 
+		REAL, DIMENSION(:), INTENT(INOUT) :: x_0, x_1, x
+		REAL, INTENT(INOUT) :: kay, kay_0
+		CHARACTER, INTENT(IN) :: converge
+		INTEGER, INTENT(IN) :: iter, n
+
+		ALLOCATE(Q( (n*n) ))
+		ALLOCATE(Q_0( (n*n) ))
+		ALLOCATE(error_vec( (n*n) ))
+		ALLOCATE(b( (n * n) ))
+		error1 = tol + 1
+		error2 = tol + 1
+		num = 0
+
+
+		DO k = 1, (n * n)
+			Q_0(k) = ( S(k) * x(k) )
+			b(k) = Q_0(k) / kay_0
+		END DO
+
+		DO WHILE ((error1 > tol) .OR. (error2 > tol))
+			num = num + 1
+			sum1 = 0
+			sum2 = 0
+			x_0 = x_1
+			x_1 = x
+			CALL jacobi((n * n),A,b,x_0,x,tol,converge,iter)
+			DO k = 1, (n * n)
+				Q(k) = ( S(k) * x(k) )
+				sum1 = sum1 + Q(k)
+				sum2 = sum2 + Q_0(k)
+			END DO
+			kay = kay_0 * (sum1 / sum2)
+			Q_0 = Q
+			b = Q / kay
+
+			error_vec = ABS(x - x_1)
+
+			IF (converge == 'A') THEN
+				error1 = (kay - kay_0)
+				error2 = dot_product(error_vec,error_vec) ! Absolute error
+			ELSE
+				error1 = (kay - kay_0) / kay
+				error2 = dot_product(error_vec,error_vec)/dot_product(x,x) ! Relative Error
+			END IF
+
+			IF (num > iter) THEN
+				PRINT *, 'Failed to converge. Consider raising iteration count.'
+				STOP
+			END IF
+
+			kay_0 = kay
+
+		END DO
+
+
+
+	END SUBROUTINE power
 
 END MODULE iterate

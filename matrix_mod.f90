@@ -11,12 +11,8 @@ CONTAINS
 		REAL, INTENT(IN) :: grid_h
 		REAL, DIMENSION(:), INTENT(INOUT) :: S
 
+		PRINT *, "Building Matrix 'A'..."
 
-		DO k = 1, (n*n)
-			DO m = 1, (n*n)
-				A(k,m) = 0
-			END DO
-		END DO
 
 
 		!BODY
