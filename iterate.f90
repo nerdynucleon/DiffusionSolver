@@ -148,7 +148,7 @@ CONTAINS
 			END IF
 
 			IF (source_type == 'Q') THEN
-				print *, "iteration count: ", num
+				print *, "iteration count: ", num, "error:", error
 			END IF
 
 
