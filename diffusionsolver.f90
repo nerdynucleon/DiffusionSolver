@@ -3,13 +3,16 @@ PROGRAM Diffusion_Solver
 	USE input
 	USE iterate
 	USE output
+	USE matrix_mod
 	IMPLICIT NONE
 	INTEGER :: n, n_mat, iter, n_squares, n_circles, i
 	REAL :: tol, grid_h
 	REAL, ALLOCATABLE, DIMENSION(:) :: D, sig_a, source_mat
-	REAL, ALLOCATABLE, DIMENSION(:,:) :: squares, circles
+	REAL, ALLOCATABLE, DIMENSION(:,:) :: squares, circles, A, F
 	REAL, ALLOCATABLE, DIMENSION(:,:,:) :: G
 	character(1) :: source_type, converge, T,R,L,B
+	! Solution Variables
+	REAL, ALLOCATABLE, DIMENSION(:) :: S, x_0, x
 
 	open(unit=1, file="DiffusionInput", iostat=i, status="old", action="read")
 	if ( i /= 0 ) stop "Check that DiffusionInput Exists"
@@ -17,7 +20,9 @@ PROGRAM Diffusion_Solver
 	if ( i /= 0 ) stop "DiffusionOutput already Exists"
 	open(unit=3, file="Geometry.csv", iostat=i, status="new", action="write")
 	if ( i /= 0 ) stop "Geometry already Exists"
-	open(unit=4, file="Result.csv", iostat=i, status="new", action="write")
+	open(unit=4, file="matrix.csv", iostat=i, status="new", action="write")
+	if ( i /= 0 ) stop "Matrix already Exists"
+	open(unit=5, file="Result.csv", iostat=i, status="new", action="write")
 	if ( i /= 0 ) stop "Result already Exists"
 	
 	
@@ -31,6 +36,10 @@ PROGRAM Diffusion_Solver
 	!Grid Spacing, Number of Materials
 	READ(1,*) n, n_mat
 	ALLOCATE(G(n-1,n-1,4))
+	ALLOCATE(A((n*n), (n*n)))
+	ALLOCATE(x_0(n * n))
+	ALLOCATE(x(n * n))
+	ALLOCATE(S(n * n))
 	! Number of Shapes
 	READ(1,*) n_squares, n_circles
 	! Allocate Material Matrices
@@ -65,9 +74,13 @@ PROGRAM Diffusion_Solver
 ! Build and Iterate
 	CALL geometry(G,n,D,sig_a,source_mat,n_circles, n_squares, squares, circles,grid_h)
 	CALL geometry_out(G)
-!	CALL matrix()
-!	CALL iterate()
+
+	CALL matrix(n, A, G, L, R, T, B, grid_h, S)
+	CALL matrix_out(A)
+
+	CALL solve(n,A,S,x_0,x,tol,converge,iter) 
 ! Output
+	CALL solution_out(x)
 	CALL done()
 
 END PROGRAM Diffusion_Solver

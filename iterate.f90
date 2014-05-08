@@ -95,12 +95,6 @@ CONTAINS
 	END FUNCTION inside
 
 
-
-	SUBROUTINE matrix()
-
-	END SUBROUTINE matrix
-
-
 	SUBROUTINE jacobi(n,A,b,x_0,x,tol,converge,iter)
 		IMPLICIT NONE
 		INTEGER, INTENT(IN) :: n, iter
@@ -136,7 +130,7 @@ CONTAINS
 
 			error_vec = ABS(x-x_0)
 
-			IF (converge == 'a') THEN
+			IF (converge == 'A') THEN
 				error = dot_product(error_vec,error_vec) ! Absolute error
 			ELSE
 				error = dot_product(error_vec,error_vec)/dot_product(x,x) ! Relative Error
@@ -153,4 +147,27 @@ CONTAINS
 
 		END DO
 	END SUBROUTINE jacobi
+
+	SUBROUTINE solve(n,A,S,x_0,x,tol,converge,iter)
+		IMPLICIT NONE
+		INTEGER :: k, m, z
+		INTEGER, INTENT(IN) :: n, iter
+		REAl, INTENT(IN) :: tol
+		REAL, DIMENSION(:), INTENT(INOUT) :: x, x_0
+		REAL, DIMENSION(:,:), INTENT(IN) :: A
+		REAL, DIMENSION(:), INTENT(IN) :: S
+		CHARACTER, INTENT(IN) :: converge
+
+		PRINT *, "Solving..."
+
+		!Create Flux iterators
+		DO k = 1, (n * n)
+			x_0(k) = 0
+			x(k) = 1
+		END DO
+
+		CALL jacobi((n * n),A,S,x_0,x,tol,converge,iter)
+
+	END SUBROUTINE solve
+
 END MODULE iterate

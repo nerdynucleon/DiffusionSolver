@@ -43,10 +43,26 @@ CONTAINS
 
 	SUBROUTINE geometry_out(G)
 		IMPLICIT NONE
-		REAL, ALLOCATABLE, DIMENSION(:,:,:), INTENT(IN) :: G
+		REAL, DIMENSION(:,:,:), INTENT(IN) :: G
 		WRITE(2,*) "Geometry"
 		WRITE(2,*) "See Geometry.csv for geometry"
 		WRITE(3,'(*(G0.10,:,","))') G
 	END SUBROUTINE geometry_out
+
+	SUBROUTINE matrix_out(A)
+		IMPLICIT NONE
+		REAL, DIMENSION(:,:), INTENT(IN) :: A
+		WRITE(2,*) "matrix"
+		WRITE(2,*) "See matrix.csv for matrix"
+		WRITE(4,'(*(G0.10,:,","))') A
+	END SUBROUTINE matrix_out
+
+	SUBROUTINE solution_out(x)
+		REAL, DIMENSION(:), INTENT(IN) :: x
+		WRITE(2,*) "flux:"
+		WRITE(2,*) "See results.csv for solution"
+		WRITE(5,'(*(G0.10,:,","))') x
+	END SUBROUTINE solution_out
+
 
 END MODULE output
