@@ -68,9 +68,9 @@ CONTAINS
 
 		!grid h kept for expandibility
 		left = 0
-		right = -( G(i + 1, j + 1, 1)*grid_h)/(grid_h)
+		right = -( G(i + 1, j + 1, 1)*grid_h)/(2*grid_h)
 		bottom = 0
-		top = -( G(i + 1, j + 1, 1)*grid_h)/(grid_h)
+		top = -( G(i + 1, j + 1, 1)*grid_h)/(2*grid_h)
 		loss = ( G(i + 1,j + 1, 2)*grid_h*grid_h )/4
 		center = loss - (left + right + bottom + top)
 		!Assigning Values
@@ -91,10 +91,10 @@ CONTAINS
 		k = n
 		CALL indices(i, j, k, n)
 		!grid h kept for expandibility
-		left = -( G(i, j + 1, 1)*grid_h)/(grid_h)
+		left = -( G(i, j + 1, 1)*grid_h)/(2*grid_h)
 		right = 0
 		bottom = 0
-		top = -( G(i, j + 1, 1)*grid_h )/(grid_h)
+		top = -( G(i, j + 1, 1)*grid_h )/(2*grid_h)
 		loss = ( G(i, j + 1, 2)*grid_h*grid_h)/4
 		center = loss - (left + right + bottom + top)
 
@@ -116,8 +116,8 @@ CONTAINS
 		CALL indices(i, j, k, n)
 		!grid h kept for expandibility
 		left = 0
-		right = -( G(i + 1, j, 1)*grid_h )/(grid_h)
-		bottom = -( G(i + 1, j, 1)*grid_h)/(grid_h)
+		right = -( G(i + 1, j, 1)*grid_h )/(2*grid_h)
+		bottom = -( G(i + 1, j, 1)*grid_h)/(2*grid_h)
 		top = 0
 		loss = (G(i + 1, j, 2)*grid_h*grid_h )/4
 		center = loss - (left + right + bottom + top)
@@ -140,9 +140,9 @@ CONTAINS
 		CALL indices(i, j, k, n)
 
 		!grid h kept for expandibility
-		left = -( G(i, j, 1)*grid_h )/(grid_h)
+		left = -( G(i, j, 1)*grid_h )/(2*grid_h)
 		right = 0
-		bottom = -( G(i, j, 1)*grid_h )/(grid_h)
+		bottom = -( G(i, j, 1)*grid_h )/(2*grid_h)
 		top = 0
 		loss = (G(i, j, 2)*grid_h*grid_h )/4
 		center = loss - (left + right + bottom + top)
@@ -175,8 +175,8 @@ CONTAINS
 		!grid h kept for expandibility
 		left = 0
 		right = -( G(i + 1, j, 1)*grid_h + G(i + 1, j + 1, 1)*grid_h)/(2*grid_h)
-		bottom = -( G(i + 1, j, 1)*grid_h)/(grid_h)
-		top = -( G(i + 1,j + 1, 1)*grid_h)/(grid_h)
+		bottom = -( G(i + 1, j, 1)*grid_h)/(2*grid_h)
+		top = -( G(i + 1,j + 1, 1)*grid_h)/(2*grid_h)
 		loss = (G(i + 1, j, 2)*grid_h*grid_h + G(i + 1,j + 1,2)*grid_h*grid_h)/4
 		center = loss - (left + right + bottom + top)
 
@@ -206,8 +206,8 @@ CONTAINS
 		!grid h kept for expandibility
 		left = -( G(i, j, 1)*grid_h + G(i, j + 1, 1)*grid_h)/(2*grid_h)
 		right = 0
-		bottom = -( G(i, j, 1)*grid_h )/(grid_h)
-		top = -( G(i, j + 1, 1)*grid_h )/(grid_h)
+		bottom = -( G(i, j, 1)*grid_h )/(2*grid_h)
+		top = -( G(i, j + 1, 1)*grid_h )/(2*grid_h)
 		loss = (G(i, j, 2)*grid_h*grid_h + G(i, j + 1, 2)*grid_h*grid_h)/4
 		center = loss - (left + right + bottom + top)
 
@@ -236,8 +236,8 @@ CONTAINS
 		CHARACTER, INTENT(IN) :: B
 		REAL, DIMENSION(:), INTENT(INOUT) :: S
 		!grid h kept for expandibility
-		left = -(  G(i, j + 1, 1)*grid_h)/(grid_h)
-		right = -( G(i + 1, j + 1, 1)*grid_h)/(grid_h)
+		left = -(  G(i, j + 1, 1)*grid_h)/(2*grid_h)
+		right = -( G(i + 1, j + 1, 1)*grid_h)/(2*grid_h)
 		bottom = 0
 		top = -( G(i, j + 1 ,1)*grid_h + G(i + 1, j + 1, 1)*grid_h)/(2*grid_h)
 		loss = (G(i + 1,j + 1, 2)*grid_h*grid_h + G(i, j + 1, 2)*grid_h*grid_h)/4
@@ -268,8 +268,8 @@ CONTAINS
 		CHARACTER, INTENT(IN) :: T
 		REAL, DIMENSION(:), INTENT(INOUT) :: S
 		!grid h kept for expandibility
-		left = -( G(i, j, 1)*grid_h )/(grid_h)
-		right = -( G(i + 1, j, 1)*grid_h )/(grid_h)
+		left = -( G(i, j, 1)*grid_h )/(2*grid_h)
+		right = -( G(i + 1, j, 1)*grid_h )/(2*grid_h)
 		bottom = -( G(i, j, 1)*grid_h + G(i + 1, j, 1)*grid_h)/(2*grid_h)
 		top = 0
 		loss = (G(i, j, 2)*grid_h*grid_h + G(i + 1, j, 2)*grid_h*grid_h)/4
