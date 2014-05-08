@@ -68,9 +68,13 @@ PROGRAM Diffusion_Solver
 	! Source_type
 	READ(1,*) source_type
 
+
+! Error Check
+
+! Repeat Input
 	CALL repeat_input1(n, n_mat,n_squares, n_circles)
 	CALL repeat_input2(squares,circles,grid_h,D,sig_a,source_mat,T,R,L,B,iter,tol,converge,source_type)
-! 	CALL error_check()
+
 ! Build and Iterate
 	CALL geometry(G,n,D,sig_a,source_mat,n_circles, n_squares, squares, circles,grid_h)
 	CALL geometry_out(G)
