@@ -235,10 +235,10 @@ CONTAINS
 			error_vec = ABS(x - x_0)
 
 			IF (converge == 'A') THEN
-				error1 = (kay - kay_0)
+				error1 = ABS(kay - kay_0)
 				error2 = dot_product(error_vec,error_vec) ! Absolute error
 			ELSE
-				error1 = (kay - kay_0) / kay
+				error1 = ABS(kay - kay_0) / kay
 				error2 = dot_product(error_vec,error_vec)/dot_product(x,x) ! Relative Error
 			END IF
 
