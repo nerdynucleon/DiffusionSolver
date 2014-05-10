@@ -21,7 +21,7 @@ CONTAINS
 		character(1), INTENT(IN) :: source_type, converge, T, R, L, B
 		WRITE(2,*) "Squares: material, x1, x2, y1, y2, priority"
 		WRITE(2,*) squares
-		WRITE(2,*) "Circles: material, x, y, priority"
+		WRITE(2,*) "Circles: material, x, y, r, priority"
 		WRITE(2,*) circles
 		WRITE(2,*) "Grid Spacing"
 		WRITE(2,*) grid_h
