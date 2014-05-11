@@ -70,17 +70,22 @@ PROGRAM Diffusion_Solver
 
 
 ! Error Check
+	CALL error_check1(n, n_mat)
+	CALL error_check2(grid_h, T, R, L, B, iter, tol, converge,source_type)
 
 ! Repeat Input
 	CALL repeat_input1(n, n_mat,n_squares, n_circles)
 	CALL repeat_input2(squares,circles,grid_h,D,sig_a,source_mat,T,R,L,B,iter,tol,converge,source_type)
 
 ! Build and Iterate
+
 	CALL geometry(G,n,D,sig_a,source_mat,n_circles, n_squares, squares, circles,grid_h)
 	CALL geometry_out(G)
 
 	CALL matrix(n, A, G, L, R, T, B, grid_h, S)
 	!CALL matrix_out(A)
+	PRINT *, 'Running Solver...'
+
 
 	CALL solve(n,A,S,x,tol,converge,iter,source_type, kay, kay_0) 
 ! Output
